@@ -42,19 +42,51 @@ async function update(id, name, address, email, phone) {
   }
 }
 
-async function destroy(id) {
+async function destroy(customerId) {
   const connection = await pool.getConnection();
   try {
+   
     const [result] = await connection.execute(
       "DELETE FROM customers WHERE id = ?",
-      [id]
+      [customerId]
     );
-    return result.affectedRows;
+
+    if (result.affectedRows === 0) {
+      console.log("Le client n'a pas été trouvé.");
+      return;
+    }
+
+    console.log("Client supprimé avec succès.");
   } catch (error) {
-    throw new Error("Error deleting customer: " + error.message);
+    if (error.code === 'ER_ROW_IS_REFERENCED_2') {
+    
+      console.log("Impossible de supprimer le client car il est lié à des commandes existantes.");
+    } else {
+      
+      console.error("Erreur lors de la suppression du client :", error.message);
+    }
   } finally {
     connection.release();
   }
 }
 
-module.exports = { get, add, update, destroy };
+async function getById(customerId) {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM customers WHERE id = ?",
+      [customerId]
+    );
+    return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération du client par ID :",
+      error.message
+    );
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
+
+module.exports = { get, add, update, destroy, getById };
