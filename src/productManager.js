@@ -71,10 +71,7 @@ async function destroy(productId) {
         "Impossible de supprimer le Produit car il est lié à des commandes existantes."
       );
     } else {
-      console.error(
-        "Erreur lors de la suppression du Produit :",
-        error.message
-      );
+      console.error("Erreur lors de la suppression du Produit :", error.message);
     }
   } finally {
     connection.release();
