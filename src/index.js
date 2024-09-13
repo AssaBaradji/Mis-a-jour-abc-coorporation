@@ -17,6 +17,7 @@ async function customerMenu() {
     console.log("2. Lister les clients");
     console.log("3. Mettre à jour un client");
     console.log("4. Supprimer un client");
+    console.log("5. Voir un client par ID");
     console.log("0. Retour au menu principal");
 
     choice = readlineSync.question("Entrez votre choix : ");
@@ -37,7 +38,16 @@ async function customerMenu() {
         break;
 
       case "3":
-        const id = readlineSync.question("ID du client à mettre à jour : ");
+        const id = readlineSync.questionInt("ID du client à mettre à jour : ");
+        const customerExists = await customerManager.getById(id);
+
+        if (!customerExists) {
+          console.log(
+            "Client non trouvé. Veuillez vérifier l'ID et réessayer."
+          );
+          break;
+        }
+
         const newName = readlineSync.question("Nouveau nom : ");
         const newAddress = readlineSync.question("Nouvelle adresse : ");
         const newEmail = readlineSync.question("Nouvel email : ");
@@ -53,10 +63,20 @@ async function customerMenu() {
         break;
 
       case "4":
-        const deleteId = readlineSync.question("ID du client à supprimer : ");
-        const result = await customerManager.destroy(deleteId);
-        if (result) {
-          console.log("Client supprimé avec succès.");
+        const deleteId = readlineSync.questionInt(
+          "ID du client à supprimer : "
+        );
+        await customerManager.destroy(deleteId);
+        break;
+
+      case "5":
+        const viewId = readlineSync.questionInt("ID du client à voir : ");
+        const customer = await customerManager.getById(viewId);
+        if (customer) {
+          console.log("Détails du client :");
+          console.log(customer);
+        } else {
+          console.log("Client non trouvé.");
         }
         break;
 
@@ -78,6 +98,7 @@ async function productMenu() {
     console.log("2. Lister les produits");
     console.log("3. Mettre à jour un produit");
     console.log("4. Supprimer un produit");
+    console.log("5. Voir un produit par ID");
     console.log("0. Retour au menu principal");
 
     choice = readlineSync.question("Entrez votre choix : ");
@@ -139,6 +160,16 @@ async function productMenu() {
           console.log("Produit supprimé avec succès.");
         }
         break;
+      case "5":
+        const viewId = readlineSync.question("ID du produit à voir : ");
+        const product = await productManager.getById(viewId);
+        if (product) {
+          console.log("Détails du produit :");
+          console.log(product);
+        } else {
+          console.log("Produit non trouvé.");
+        }
+        break;
 
       case "0":
         console.log("Retour au menu principal.");
@@ -150,9 +181,9 @@ async function productMenu() {
   }
 }
 
-async function orderDetailMenu() {
+async function orderDetailMenu(newOrderId) {
   let choice = "";
-  while (choice !== "0") {
+  while (choice !== "2") {
     console.log("\n--- Gestion des détails de commande ---");
     console.log("1. Ajouter des produits à la commande");
     console.log("2. Sauvegarder et quitter");
@@ -166,7 +197,7 @@ async function orderDetailMenu() {
         let quantity = readlineSync.question("Quantité : ");
         const price = readlineSync.question("Prix : ");
 
-        if (!productId || isNaN(productId)) {
+        if (!productId || isNaN(productId) || productId <= 0) {
           console.log("Erreur : L'ID du produit est invalide.");
           break;
         }
@@ -184,8 +215,14 @@ async function orderDetailMenu() {
           );
           break;
         }
+
         try {
-          await orderManager.addProductToOrder(productId, quantity, price);
+          await orderManager.addOrderDetail(
+            quantity,
+            price,
+            productId,
+            newOrderId
+          );
           console.log("Produit ajouté à la commande avec succès.");
         } catch (error) {
           console.error(
@@ -195,12 +232,12 @@ async function orderDetailMenu() {
         break;
 
       case "2":
-        console.log("Commande ajoutée avec succès avec l'ID :", newOrderId);
+        console.log("Commande et ses détails enregistrés avec succès.");
         return;
 
       case "0":
         console.log("Retour au menu principal.");
-        break;
+        return;
 
       default:
         console.log("Choix invalide.");
@@ -216,6 +253,7 @@ async function orderMenu() {
     console.log("2. Lister les commandes avec les détails");
     console.log("3. Mettre à jour une commande avec ses détails");
     console.log("4. Supprimer une commande avec ses détails");
+    console.log("5. Voir une commande par ID");
     console.log("0. Retour au menu principal");
 
     choice = readlineSync.question("Entrez votre choix : ");
@@ -409,6 +447,37 @@ async function orderMenu() {
           );
         }
         break;
+      case "5":
+        const viewId = readlineSync.questionInt("ID de la commande à voir : ");
+
+      
+        const order = await orderManager.getOrderById(viewId);
+
+        if (order) {
+          
+          const details = await orderManager.getOrderDetailByOrderId(viewId);
+
+          
+          const orderDetails = {
+            id: order.id,
+            date: order.date,
+            delivery_address: order.delivery_address,
+            customer_id: order.customer_id,
+            track_number: order.track_number,
+            status: order.status,
+            details: details.map((detail) => ({
+              product_id: detail.product_id,
+              quantity: detail.quantity,
+              price: detail.price,
+            })),
+          };
+          
+          console.log("Détails de la commande :");
+          console.log(orderDetails);
+        } else {
+          console.log("Commande non trouvée.");
+        }
+        break;
 
       case "0":
         console.log("Retour au menu principal.");
@@ -428,6 +497,7 @@ async function paymentMenu() {
     console.log("2. Lister les paiements");
     console.log("3. Mettre à jour un paiement");
     console.log("4. Supprimer un paiement");
+    console.log("5. Voir un paiement par ID");
     console.log("0. Retour au menu principal");
 
     choice = readlineSync.question("Entrez votre choix : ");
@@ -450,9 +520,9 @@ async function paymentMenu() {
       case "3":
         const id = readlineSync.question("ID du paiement à mettre à jour : ");
         const order_id = readlineSync.question("ID de la commande : ");
-        const newdate = readlineSync.question("Nouveau date : ");
-        const newamount = readlineSync.question("Nouveau prix : ");
-        const newpaymentMethod = readlineSync.question("Nouvelle Methode : ");
+        const newdate = readlineSync.question("Nouvelle date : ");
+        const newamount = readlineSync.question("Nouveau montant : ");
+        const newpaymentMethod = readlineSync.question("Nouvelle méthode : ");
         await paymentManager.updatePayment(
           id,
           order_id,
@@ -467,6 +537,17 @@ async function paymentMenu() {
         const deleteId = readlineSync.question("ID du paiement à supprimer : ");
         await paymentManager.destroyPayment(deleteId);
         console.log("Paiement supprimé avec succès.");
+        break;
+
+      case "5":
+        const viewId = readlineSync.question("ID du paiement à voir : ");
+        const payment = await paymentManager.getPaymentById(viewId);
+        if (payment) {
+          console.log("Détails du paiement :");
+          console.log(payment);
+        } else {
+          console.log("Paiement non trouvé.");
+        }
         break;
 
       case "0":

@@ -162,7 +162,43 @@ async function updateOrderDetail(detailId, quantity, price) {
     return result.affectedRows;
   });
 }
+async function getOrderById(orderId) {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM purchase_orders WHERE id = ?",
+      [orderId]
+    );
+    return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération de la commande :",
+      error.message
+    );
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
 
+async function getOrderDetailByOrderId(orderId) {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM order_details WHERE order_id = ?",
+      [orderId]
+    );
+    return rows;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération des details :",
+      error.message
+    );
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
 module.exports = {
   getOrders,
   addOrder,
@@ -171,4 +207,6 @@ module.exports = {
   deleteOrder,
   getOrderDetails,
   updateOrderDetail,
+  getOrderById,
+  getOrderDetailByOrderId,
 };

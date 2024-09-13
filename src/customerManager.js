@@ -45,7 +45,6 @@ async function update(id, name, address, email, phone) {
 async function destroy(customerId) {
   const connection = await pool.getConnection();
   try {
-   
     const [result] = await connection.execute(
       "DELETE FROM customers WHERE id = ?",
       [customerId]
@@ -58,11 +57,11 @@ async function destroy(customerId) {
 
     console.log("Client supprimé avec succès.");
   } catch (error) {
-    if (error.code === 'ER_ROW_IS_REFERENCED_2') {
-    
-      console.log("Impossible de supprimer le client car il est lié à des commandes existantes.");
+    if (error.code === "ER_ROW_IS_REFERENCED_2") {
+      console.log(
+        "Impossible de supprimer le client car il est lié à des commandes existantes."
+      );
     } else {
-      
       console.error("Erreur lors de la suppression du client :", error.message);
     }
   } finally {

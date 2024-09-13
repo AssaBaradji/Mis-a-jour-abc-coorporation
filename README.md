@@ -40,7 +40,7 @@ Ce projet est une application de gestion commerciale permettant de gérer des **
 Une fois les étapes d'installation terminées, démarrez l'application via la commande suivante :
 
 ```bash
-node index.js
+node start
 ```
 
 ## Auteur

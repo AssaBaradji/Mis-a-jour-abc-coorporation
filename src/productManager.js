@@ -50,6 +50,24 @@ async function update(
     connection.release();
   }
 }
+async function getById(productId) {
+  const connection = await pool.getConnection();
+  try {
+    const [rows] = await connection.query(
+      "SELECT * FROM products WHERE id = ?",
+      [productId]
+    );
+    return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+    console.error(
+      "Erreur lors de la récupération du produit par ID :",
+      error.message
+    );
+    throw error;
+  } finally {
+    connection.release();
+  }
+}
 
 async function destroy(productId) {
   const connection = await pool.getConnection();
@@ -71,11 +89,14 @@ async function destroy(productId) {
         "Impossible de supprimer le Produit car il est lié à des commandes existantes."
       );
     } else {
-      console.error("Erreur lors de la suppression du Produit :", error.message);
+      console.error(
+        "Erreur lors de la suppression du Produit :",
+        error.message
+      );
     }
   } finally {
     connection.release();
   }
 }
 
-module.exports = { get, add, update, destroy };
+module.exports = { get, add, update, destroy, getById };
