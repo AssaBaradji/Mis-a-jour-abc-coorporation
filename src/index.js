@@ -24,10 +24,22 @@ async function customerMenu() {
 
     switch (choice) {
       case "1":
-        const name = readlineSync.question("Nom : ");
-        const address = readlineSync.question("Adresse : ");
-        const email = readlineSync.question("Email : ");
-        const phone = readlineSync.question("Téléphone : ");
+        let name = readlineSync.question("Nom : ");
+        while(name === ""){
+          console.log("Le nom du client est obligatoire...")
+          name = readlineSync.question("Nom : ");
+        }
+        let address = readlineSync.question("Adresse : ");
+        while(address === ""){
+          console.log('l\'address est obligatoire')
+          address = readlineSync.question("address :")
+        }
+        const email = readlineSync.questionEMail("Email : ");
+        let phone = readlineSync.question("Téléphone : ");
+        while(phone === ""){
+          console.log('Téléphone est obligatoire')
+          phone = readlineSync.question("Télé :")
+        }
         await customerManager.add(name, address, email, phone);
         console.log("Client ajouté avec succès.");
         break;
@@ -48,10 +60,22 @@ async function customerMenu() {
           break;
         }
 
-        const newName = readlineSync.question("Nouveau nom : ");
-        const newAddress = readlineSync.question("Nouvelle adresse : ");
-        const newEmail = readlineSync.question("Nouvel email : ");
-        const newPhone = readlineSync.question("Nouveau téléphone : ");
+        let newName = readlineSync.question("Nouveau nom : ");
+        while (newName === ""){
+          console.log('le nom est obligatoire')
+          newName = readlineSync.question('nom : ')
+        }
+        let newAddress = readlineSync.question("Nouvelle adresse : ");
+        while (newAddress === ""){
+          console.log('l\'adress est obligatoire')
+          newAddress = readlineSync.question('address : ')
+        }
+        const newEmail = readlineSync.questionEMail("Nouvel email : ");
+        let newPhone = readlineSync.question("Nouveau phone : ");
+        while (newPhone === ""){
+          console.log('Téléphone est obligatoire')
+          newPhone = readlineSync.question('Téléphone : ')
+        }
         await customerManager.update(
           id,
           newName,
