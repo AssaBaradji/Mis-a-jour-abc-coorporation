@@ -39,11 +39,17 @@ async function update(
 ) {
   const connection = await pool.getConnection();
   try {
-    const [result] = await connection.execute(
-      "UPDATE products SET name = ?, price = ?, description = ?, stock = ?, category = ?, barcode = ?, status = ? WHERE id = ?",
-      [name, price, description, stock, category, barcode, status, id]
-    );
-    return result.affectedRows;
+    const [idExist] = await connection.execute("SELECT * FROM products WHERE id = ?", [id])
+    if(idExist.length == 0){
+      console.log("L'id du produit que vous essayez de modifier n'existe pas...")
+    }else{
+      const [result] = await connection.execute(
+        "UPDATE products SET name = ?, price = ?, description = ?, stock = ?, category = ?, barcode = ?, status = ? WHERE id = ?",
+        [name, price, description, stock, category, barcode, status, id]
+      );
+      console.log("Le produit a été modifier avec succès")
+      return result.affectedRows;
+    }
   } catch (error) {
     throw new Error("Error updating product: " + error.message);
   } finally {

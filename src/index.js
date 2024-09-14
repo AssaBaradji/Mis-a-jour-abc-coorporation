@@ -3,6 +3,7 @@ const customerManager = require("./customerManager");
 const productManager = require("./productManager");
 const orderManager = require("./orderManager");
 const paymentManager = require("./paymentManager");
+const { stat, read, readFileSync } = require("fs");
 
 function isValidDate(dateString) {
   const date = new Date(dateString);
@@ -129,15 +130,43 @@ async function productMenu() {
 
     switch (choice) {
       case "1":
-        const name = readlineSync.question("Nom du produit : ");
-        const price = readlineSync.question("Prix : ");
-        const description = readlineSync.question("Description : ");
-        const stock = readlineSync.question("Stock : ");
-        const category = readlineSync.question("Catégorie : ");
-        const barcode = readlineSync.question("Code-barres : ");
-        const status = readlineSync.question(
+        let name = readlineSync.question("Nom du produit : ");
+          while(name === ""){
+            console.log("Le nom du produit est obligatoire...")
+            name = readlineSync.question("Nom du produit : ");
+
+          }
+        const price = readlineSync.questionFloat("Prix : ");
+        
+        let description = readlineSync.question("Description : ");
+        while(description === ""){
+          console.log("La description est obligatoire...")
+          description = readlineSync.question("Description : ");
+
+
+        }
+        const stock = readlineSync.questionInt("Stock : ");
+        let category = readlineSync.question("Catégorie : ");
+        while(category === ""){
+          console.log("La catégorie du produit doit etre renseignée...")
+          category = readlineSync.question("Catégorie : ");
+
+        }
+        let barcode = readlineSync.question("Code-barres : ");
+        while(barcode === ""){
+          console.log("Le code barre du produit est obligatoire...")
+          barcode = readlineSync.question("Code-barres : ");
+
+        }
+        let status = readlineSync.question(
           "Statut (disponible/indisponible) : "
         );
+        while(status === ""){
+          console.log("Le statut est obligatoire...")
+          status = readlineSync.question(
+            "Statut (disponible/indisponible) : "
+          );
+        }
         await productManager.add(
           name,
           price,
@@ -156,14 +185,38 @@ async function productMenu() {
         break;
 
       case "3":
-        const id = readlineSync.question("ID du produit à mettre à jour : ");
-        const newName = readlineSync.question("Nouveau nom : ");
-        const newPrice = readlineSync.question("Nouveau prix : ");
-        const newDescription = readlineSync.question("Nouvelle description : ");
-        const newStock = readlineSync.question("Nouveau stock : ");
-        const newCategory = readlineSync.question("Nouvelle catégorie : ");
-        const newBarcode = readlineSync.question("Nouveau code-barres : ");
-        const newStatus = readlineSync.question("Nouveau statut : ");
+        const id = readlineSync.questionInt("ID du produit à mettre à jour : ");
+        let newName = readlineSync.question("Nouveau nom : ");
+        while(newName === ""){
+          console.log("le nom est obligatoire")
+          newName = readlineSync.question('nom du produit : ')
+        }
+        const newPrice = readlineSync.questionFloat("Nouveau prix : ");
+        let newDescription = readlineSync.question("Nouvelle description : ");
+        while(newDescription === ""){
+          console.log('veuilleza renseignez la description')
+          newDescription = readlineSync.question('Description : ')
+        }
+        let newStock = readlineSync.question("Nouveau stock : ");
+        while(newStock === ""){
+          console.log("stock doit etre renseigner")
+          newStock = readlineSync.question("Stock : ")
+        }
+        let newCategory = readlineSync.question("Nouvelle catégorie : ");
+        while(newCategory == ""){
+          console.log('category doit etre renseiger')
+          newCategory = readlineSync.question("Catégorie: ")
+        } 
+        let newBarcode = readlineSync.question("Nouveau code-barres : ");
+        while(newBarcode === ""){
+          console.log('renseigner barcode')
+          newBarcode = readlineSync.question("Barcode: ")
+        }
+        let newStatus = readlineSync.question("Nouveau statut : ");
+        while(newStatus === ""){ 
+          console.log('le status est obligatoire')
+          newStatus = readlineSync.question("Status : ")
+        }
         await productManager.update(
           id,
           newName,
@@ -174,7 +227,6 @@ async function productMenu() {
           newBarcode,
           newStatus
         );
-        console.log("Produit mis à jour avec succès.");
         break;
 
       case "4":
