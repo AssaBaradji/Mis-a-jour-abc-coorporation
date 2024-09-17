@@ -21,7 +21,11 @@ async function add(name, address, email, phone) {
     );
     return result.insertId;
   } catch (error) {
-    throw new Error("Error adding customer: " + error.message);
+    if (error.code === 'ER_DUP_ENTRY') {
+      throw new Error(`le numéro de téléphone ${phone} existe déja.`);
+    } else {
+      throw new Error("Error adding customer: " + error.message);
+    }
   } finally {
     connection.release();
   }

@@ -40,9 +40,9 @@ Ce projet est une application de gestion commerciale permettant de gérer des **
 Une fois les étapes d'installation terminées, démarrez l'application via la commande suivante :
 
 ```bash
-node start
+npm start
 ```
 
 ## Auteur
 
-- Assa Baradji [https://github.com/AssaBaradji]
+- [Assa Baradji](https://github.com/AssaBaradji)

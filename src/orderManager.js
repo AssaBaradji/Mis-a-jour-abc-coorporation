@@ -1,5 +1,5 @@
-const pool = require("./db") 
-const readlineSync = require("readline-sync")
+const pool = require("./db");
+const readlineSync = require("readline-sync");
 
 function handleError(action, error) {
   console.error(`${action} Erreur : ${error.message}`);
@@ -67,22 +67,60 @@ async function addOrder(
 ) {
   return withConnection(async (connection) => {
     validateInputs([date, deliveryAddress, trackNumber, status, customerId]);
-    const addMoreDetails = readlineSync.question(
+    let addMoreDetails = readlineSync.question(
       "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
     );
+
     if (addMoreDetails.toLowerCase() === "o") {
+      const details = [];
+      const detail = {
+        productId:'',
+        productQuantity :'',
+        productPrice :'',
+      }
       const newProductId = readlineSync.questionInt("ID du nouveau produit : ");
+      detail.productId = newProductIdproductId
+      
       const newProductQuantity = readlineSync.questionInt(
         "Quantité du nouveau produit : "
       );
+      detail.productQuantity = newProductQuantity
       const newProductPrice = readlineSync.questionFloat(
         "Prix du nouveau produit : "
       );
+      detail.productPrice = newProductPrice
+
+      details.push(detail)
+      addMoreDetails = readlineSync.question(
+        "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
+      );
+      while (
+        addMoreDetails.toLowerCase() === "o" ||
+        addMoreDetails.toLowerCase() === "n"
+      ) {
+        switch (addMoreDetails) {
+          case "o":
+            const newProductId = readlineSync.questionInt(
+              "ID du nouveau produit : "
+            );
+            const newProductQuantity = readlineSync.questionInt(
+              "Quantité du nouveau produit : "
+            );
+            const newProductPrice = readlineSync.questionFloat(
+              "Prix du nouveau produit : "
+            );
+            
+            addMoreDetails = readlineSync.question(
+              "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
+            );
+        }
+      }
+
       const [result] = await connection.execute(
         "INSERT INTO purchase_orders (date, delivery_address, track_number, status, customer_id) VALUES (?, ?, ?, ?, ?)",
         [date, deliveryAddress, trackNumber, status, customerId]
       );
-  
+
       console.log(
         "Commande ajoutée avec succès. ID de la commande :",
         result.insertId
@@ -91,7 +129,7 @@ async function addOrder(
         newProductQuantity,
         newProductPrice,
         newProductId,
-        result.insertId,
+        result.insertId
       );
       console.log("Nouveau produit ajouté à la commande.");
     }
@@ -128,7 +166,7 @@ async function updateOrder(
   });
 }
 
-async function deleteOrder(id) {
+async function destroyOrder(id) {
   return withConnection(async (connection) => {
     validateInputs([id]);
 
@@ -223,7 +261,7 @@ module.exports = {
   addOrder,
   addOrderDetail,
   updateOrder,
-  deleteOrder,
+  destroyOrder,
   getOrderDetails,
   updateOrderDetail,
   getOrderById,

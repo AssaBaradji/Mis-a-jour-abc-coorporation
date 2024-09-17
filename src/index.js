@@ -329,13 +329,28 @@ async function orderMenu() {
 
     switch (choice) {
       case "1":
-        const date = readlineSync.question("Date (YYYY-MM-DD) : ");
-        const deliveryAddress = readlineSync.question(
-          "Adresse de livraison : "
-        );
-        const trackNumber = readlineSync.question("Numéro de suivi : ");
-        const status = readlineSync.question("Statut (en cours/complété) : ");
-        const customerId = readlineSync.question("ID du client : ");
+        let date = readlineSync.question("Date (YYYY-MM-DD) : ");
+        while (date === "") {
+          console.log("veuillez reseigner la date");
+          date = readlineSync.question("Date : ");
+        }
+        let deliveryAddress = readlineSync.question("Adresse de livraison : ");
+        while (deliveryAddress === "") {
+          console.log("veuillez reseigner l'adresse de livraison");
+          deliveryAddress = readlineSync.question("Adresse de livraison : ");
+        }
+
+        let trackNumber = readlineSync.question("Numéro de suivi : ");
+        while (trackNumber === "") {
+          console.log("veuillez reseigner le numéro de suivi");
+          trackNumber = readlineSync.question("Numéro de suivi : ");
+        }
+        let status = readlineSync.question("Statut (en cours/complété) : ");
+        while (status === "") {
+          console.log("veuillez reseigner le status");
+          status = readlineSync.question("Status : ");
+        }
+        const customerId = readlineSync.questionInt("ID du client : ");
 
         if (!isValidDate(date)) {
           console.log(
@@ -402,19 +417,39 @@ async function orderMenu() {
         break;
 
       case "3":
-        const updateId = readlineSync.question(
+        const updateId = readlineSync.questionInt(
           "ID de la commande à mettre à jour : "
         );
 
-        const newDate = readlineSync.question("Nouvelle date (YYYY-MM-DD) : ");
-        const newDeliveryAddress = readlineSync.question(
+        let newDate = readlineSync.question("Nouvelle date (YYYY-MM-DD) : ");
+        while (newDate === "") {
+          console.log("veuillez saisir une nouvelle date");
+          newDate = readlineSync.question("Nouvelle date : ");
+        }
+        let newDeliveryAddress = readlineSync.question(
           "Nouvelle adresse de livraison : "
         );
-        const newTrackNumber = readlineSync.question(
+        while (newDeliveryAddress === "") {
+          console.log("veuillez saisir une nouvelle adresse de livraison");
+          newDeliveryAddress = readlineSync.question(
+            "Nouvelle adresse de livraison : "
+          );
+        }
+        let newTrackNumber = readlineSync.question(
           "Nouveau numéro de suivi : "
         );
-        const newStatus = readlineSync.question("Nouveau statut : ");
-        const newCustomerId = readlineSync.question("Nouvel ID du client : ");
+        while (newTrackNumber === "") {
+          console.log("veuillez saisir un nouveau numéro de suivi");
+          newTrackNumber = readlineSync.question("Nouveau numéro de suivi: ");
+        }
+        let newStatus = readlineSync.question("Nouveau statut : ");
+        while (newStatus === "") {
+          console.log("veuillez saisir le nouveau status");
+          newStatus = readlineSync.question("Nouveau status");
+        }
+        const newCustomerId = readlineSync.questionInt(
+          "Nouvel ID du client : "
+        );
 
         try {
           if (!isValidDate(newDate)) {
