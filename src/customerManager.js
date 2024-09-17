@@ -19,12 +19,14 @@ async function add(name, address, email, phone) {
       "INSERT INTO customers (name, address, email, phone) VALUES (?, ?, ?, ?)",
       [name, address, email, phone]
     );
+
+    console.log("Client ajouté avec succès.");
     return result.insertId;
   } catch (error) {
-    if (error.code === 'ER_DUP_ENTRY') {
-      throw new Error(`le numéro de téléphone ${phone} existe déja.`);
+    if (error.code === "ER_DUP_ENTRY" && error.message.includes("phone")) {
+      console.log(`Le numéro de téléphone ${phone} est déjà enregistré.`);
     } else {
-      throw new Error("Error adding customer: " + error.message);
+      console.log("Une erreur s'est produite lors de l'ajout du client.");
     }
   } finally {
     connection.release();

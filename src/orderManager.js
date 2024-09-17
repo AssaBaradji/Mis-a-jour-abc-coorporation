@@ -67,72 +67,60 @@ async function addOrder(
 ) {
   return withConnection(async (connection) => {
     validateInputs([date, deliveryAddress, trackNumber, status, customerId]);
+
     let addMoreDetails = readlineSync.question(
       "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
     );
 
-    if (addMoreDetails.toLowerCase() === "o") {
-      const details = [];
+    const details = [];
+
+    while (addMoreDetails.toLowerCase() === "o") {
       const detail = {
-        productId:'',
-        productQuantity :'',
-        productPrice :'',
-      }
-      const newProductId = readlineSync.questionInt("ID du nouveau produit : ");
-      detail.productId = newProductIdproductId
-      
+        productId: "",
+        productQuantity: "",
+        productPrice: "",
+      };
+
+      const newProductId = readlineSync.questionInt("ID du produit : ");
+      detail.productId = newProductId;
+
       const newProductQuantity = readlineSync.questionInt(
-        "Quantité du nouveau produit : "
+        "Quantité du produit : "
       );
-      detail.productQuantity = newProductQuantity
-      const newProductPrice = readlineSync.questionFloat(
-        "Prix du nouveau produit : "
-      );
-      detail.productPrice = newProductPrice
+      detail.productQuantity = newProductQuantity;
 
-      details.push(detail)
+      const newProductPrice = readlineSync.questionFloat("Prix du produit : ");
+      detail.productPrice = newProductPrice;
+
+      details.push(detail);
+
       addMoreDetails = readlineSync.question(
-        "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
+        "Voulez-vous ajouter un autre produit à cette commande (o/n) ? "
       );
-      while (
-        addMoreDetails.toLowerCase() === "o" ||
-        addMoreDetails.toLowerCase() === "n"
-      ) {
-        switch (addMoreDetails) {
-          case "o":
-            const newProductId = readlineSync.questionInt(
-              "ID du nouveau produit : "
-            );
-            const newProductQuantity = readlineSync.questionInt(
-              "Quantité du nouveau produit : "
-            );
-            const newProductPrice = readlineSync.questionFloat(
-              "Prix du nouveau produit : "
-            );
-            
-            addMoreDetails = readlineSync.question(
-              "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
-            );
-        }
-      }
-
-      const [result] = await connection.execute(
-        "INSERT INTO purchase_orders (date, delivery_address, track_number, status, customer_id) VALUES (?, ?, ?, ?, ?)",
-        [date, deliveryAddress, trackNumber, status, customerId]
-      );
-
-      console.log(
-        "Commande ajoutée avec succès. ID de la commande :",
-        result.insertId
-      );
-      await addOrderDetail(
-        newProductQuantity,
-        newProductPrice,
-        newProductId,
-        result.insertId
-      );
-      console.log("Nouveau produit ajouté à la commande.");
     }
+
+    const [result] = await connection.execute(
+      "INSERT INTO purchase_orders (date, delivery_address, track_number, status, customer_id) VALUES (?, ?, ?, ?, ?)",
+      [date, deliveryAddress, trackNumber, status, customerId]
+    );
+
+    console.log(
+      "Commande ajoutée avec succès. ID de la commande :",
+      result.insertId
+    );
+
+    for (const detail of details) {
+      await addOrderDetail(
+        detail.productQuantity,
+        detail.productPrice,
+        detail.productId,
+        result.insertId
+      );
+    }
+
+    console.log(
+      `Commande et ${details.length} produit(s) ajoutés avec succès.`
+    );
   });
 }
 
@@ -215,7 +203,7 @@ async function updateOrderDetail(detailId, quantity, price) {
         "Détail de commande non trouvé ou aucune modification apportée."
       );
     }
-    console.log("Détail de commande mis à jour avec succès.");
+    // console.log("Détail de commande mis à jour avec succès.");
     return result.affectedRows;
   });
 }

@@ -3,7 +3,6 @@ const customerManager = require("./customerManager");
 const productManager = require("./productManager");
 const orderManager = require("./orderManager");
 const paymentManager = require("./paymentManager");
-const { stat, read, readFileSync } = require("fs");
 
 function isValidDate(dateString) {
   const date = new Date(dateString);
@@ -42,7 +41,6 @@ async function customerMenu() {
           phone = readlineSync.question("Télé :");
         }
         await customerManager.add(name, address, email, phone);
-        console.log("Client ajouté avec succès.");
         break;
 
       case "2":
@@ -498,7 +496,7 @@ async function orderMenu() {
                 newQuantity,
                 newPrice
               );
-              console.log(`Détail du produit ${detail.product_id} mis à jour.`);
+              console.log("Commande mis à jour avec succée");
             }
           }
         } catch (error) {

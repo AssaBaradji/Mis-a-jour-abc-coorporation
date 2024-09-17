@@ -1,8 +1,8 @@
 # Gestion Commerciale - Node.js & MySQL
 
-## Description du projet
+## Description du project
 
-Ce projet est une application de gestion commerciale permettant de gérer des **clients**, des **produits**, des **commandes**, et des **paiements**. Développée en Node.js avec une base de données MySQL, elle permet d'effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) via une interface en ligne de commande.
+Gestion Commerciale est une application de gestion permettant de gérer des **clients**, des **produits**, des **commandes**, et des **paiements**. Développée en Node.js avec une base de données MySQL, elle permet d'effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) via une interface en ligne de commande.
 
 ## Fonctionnalités principales
 
@@ -23,10 +23,16 @@ Ce projet est une application de gestion commerciale permettant de gérer des **
 1. Clonez le projet sur votre machine :
 
 ```bash
-   git clone https://github.com/AssaBaradji/mis-jour-abc-coorporation.git
+   git clone https://github.com/AssaBaradji/app-gestion-de-commandes.git
 ```
 
-2.Installez les dépendances :
+2.Accédez au répertoire du projet :
+
+````bash
+   cd cd app-gestion-des-commandes
+````
+
+3.Installez les dépendances :
 
 ```bash
   npm install
