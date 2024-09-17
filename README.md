@@ -1,8 +1,8 @@
-# Gestion Commerciale - Node.js & MySQL
+# Gestion Des Commandes - Node.js & MySQL
 
 ## Description du project
 
-Gestion Commerciale est une application de gestion permettant de gérer des **clients**, des **produits**, des **commandes**, et des **paiements**. Développée en Node.js avec une base de données MySQL, elle permet d'effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) via une interface en ligne de commande.
+Gestion des commandes est une application de gestion permettant de gérer des **clients**, des **produits**, des **commandes**, et des **paiements**. Développée en Node.js avec une base de données MySQL, elle permet d'effectuer des opérations CRUD (Créer, Lire, Mettre à jour, Supprimer) via une interface en ligne de commande.
 
 ## Fonctionnalités principales
 
