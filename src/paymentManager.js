@@ -72,16 +72,22 @@ async function getPaymentById(paymentId) {
   }
 }
 
-async function destroyPayment(id) {
+async function destroyPayment(paymentId) {
   const connection = await pool.getConnection();
   try {
     const [result] = await connection.execute(
       "DELETE FROM payments WHERE id = ?",
-      [id]
+      [paymentId]
     );
-    return result.affectedRows;
+
+    if (result.affectedRows === 0) {
+      console.log("Le paiement n'a pas été trouvé.");
+      return;
+    } else {
+      console.log("paiement supprimé avec succès.");
+    }
   } catch (error) {
-    throw new Error("Error deleting payment: " + error.message);
+    console.error("Erreur lors de la suppression du client :", error.message);
   } finally {
     connection.release();
   }

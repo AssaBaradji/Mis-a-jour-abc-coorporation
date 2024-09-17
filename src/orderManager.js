@@ -1,4 +1,5 @@
-const pool = require("./db");
+const pool = require("./db") 
+const readlineSync = require("readline-sync")
 
 function handleError(action, error) {
   console.error(`${action} Erreur : ${error.message}`);
@@ -66,16 +67,34 @@ async function addOrder(
 ) {
   return withConnection(async (connection) => {
     validateInputs([date, deliveryAddress, trackNumber, status, customerId]);
-
-    const [result] = await connection.execute(
-      "INSERT INTO purchase_orders (date, delivery_address, track_number, status, customer_id) VALUES (?, ?, ?, ?, ?)",
-      [date, deliveryAddress, trackNumber, status, customerId]
+    const addMoreDetails = readlineSync.question(
+      "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
     );
-    console.log(
-      "Commande ajoutée avec succès. ID de la commande :",
-      result.insertId
-    );
-    return result.insertId;
+    if (addMoreDetails.toLowerCase() === "o") {
+      const newProductId = readlineSync.questionInt("ID du nouveau produit : ");
+      const newProductQuantity = readlineSync.questionInt(
+        "Quantité du nouveau produit : "
+      );
+      const newProductPrice = readlineSync.questionFloat(
+        "Prix du nouveau produit : "
+      );
+      const [result] = await connection.execute(
+        "INSERT INTO purchase_orders (date, delivery_address, track_number, status, customer_id) VALUES (?, ?, ?, ?, ?)",
+        [date, deliveryAddress, trackNumber, status, customerId]
+      );
+  
+      console.log(
+        "Commande ajoutée avec succès. ID de la commande :",
+        result.insertId
+      );
+      await addOrderDetail(
+        newProductQuantity,
+        newProductPrice,
+        newProductId,
+        result.insertId,
+      );
+      console.log("Nouveau produit ajouté à la commande.");
+    }
   });
 }
 

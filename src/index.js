@@ -26,20 +26,20 @@ async function customerMenu() {
     switch (choice) {
       case "1":
         let name = readlineSync.question("Nom : ");
-        while(name === ""){
-          console.log("Le nom du client est obligatoire...")
+        while (name === "") {
+          console.log("Le nom du client est obligatoire...");
           name = readlineSync.question("Nom : ");
         }
         let address = readlineSync.question("Adresse : ");
-        while(address === ""){
-          console.log('l\'address est obligatoire')
-          address = readlineSync.question("address :")
+        while (address === "") {
+          console.log("l'address est obligatoire");
+          address = readlineSync.question("address :");
         }
         const email = readlineSync.questionEMail("Email : ");
         let phone = readlineSync.question("Téléphone : ");
-        while(phone === ""){
-          console.log('Téléphone est obligatoire')
-          phone = readlineSync.question("Télé :")
+        while (phone === "") {
+          console.log("Téléphone est obligatoire");
+          phone = readlineSync.question("Télé :");
         }
         await customerManager.add(name, address, email, phone);
         console.log("Client ajouté avec succès.");
@@ -62,20 +62,20 @@ async function customerMenu() {
         }
 
         let newName = readlineSync.question("Nouveau nom : ");
-        while (newName === ""){
-          console.log('le nom est obligatoire')
-          newName = readlineSync.question('nom : ')
+        while (newName === "") {
+          console.log("le nom est obligatoire");
+          newName = readlineSync.question("nom : ");
         }
         let newAddress = readlineSync.question("Nouvelle adresse : ");
-        while (newAddress === ""){
-          console.log('l\'adress est obligatoire')
-          newAddress = readlineSync.question('address : ')
+        while (newAddress === "") {
+          console.log("l'adress est obligatoire");
+          newAddress = readlineSync.question("address : ");
         }
         const newEmail = readlineSync.questionEMail("Nouvel email : ");
         let newPhone = readlineSync.question("Nouveau phone : ");
-        while (newPhone === ""){
-          console.log('Téléphone est obligatoire')
-          newPhone = readlineSync.question('Téléphone : ')
+        while (newPhone === "") {
+          console.log("Téléphone est obligatoire");
+          newPhone = readlineSync.question("Téléphone : ");
         }
         await customerManager.update(
           id,
@@ -131,41 +131,34 @@ async function productMenu() {
     switch (choice) {
       case "1":
         let name = readlineSync.question("Nom du produit : ");
-          while(name === ""){
-            console.log("Le nom du produit est obligatoire...")
-            name = readlineSync.question("Nom du produit : ");
-
-          }
+        while (name === "") {
+          console.log("Le nom du produit est obligatoire...");
+          name = readlineSync.question("Nom du produit : ");
+        }
         const price = readlineSync.questionFloat("Prix : ");
-        
+
         let description = readlineSync.question("Description : ");
-        while(description === ""){
-          console.log("La description est obligatoire...")
+        while (description === "") {
+          console.log("La description est obligatoire...");
           description = readlineSync.question("Description : ");
-
-
         }
         const stock = readlineSync.questionInt("Stock : ");
         let category = readlineSync.question("Catégorie : ");
-        while(category === ""){
-          console.log("La catégorie du produit doit etre renseignée...")
+        while (category === "") {
+          console.log("La catégorie du produit doit etre renseignée...");
           category = readlineSync.question("Catégorie : ");
-
         }
         let barcode = readlineSync.question("Code-barres : ");
-        while(barcode === ""){
-          console.log("Le code barre du produit est obligatoire...")
+        while (barcode === "") {
+          console.log("Le code barre du produit est obligatoire...");
           barcode = readlineSync.question("Code-barres : ");
-
         }
         let status = readlineSync.question(
           "Statut (disponible/indisponible) : "
         );
-        while(status === ""){
-          console.log("Le statut est obligatoire...")
-          status = readlineSync.question(
-            "Statut (disponible/indisponible) : "
-          );
+        while (status === "") {
+          console.log("Le statut est obligatoire...");
+          status = readlineSync.question("Statut (disponible/indisponible) : ");
         }
         await productManager.add(
           name,
@@ -187,35 +180,35 @@ async function productMenu() {
       case "3":
         const id = readlineSync.questionInt("ID du produit à mettre à jour : ");
         let newName = readlineSync.question("Nouveau nom : ");
-        while(newName === ""){
-          console.log("le nom est obligatoire")
-          newName = readlineSync.question('nom du produit : ')
+        while (newName === "") {
+          console.log("le nom est obligatoire");
+          newName = readlineSync.question("nom du produit : ");
         }
         const newPrice = readlineSync.questionFloat("Nouveau prix : ");
         let newDescription = readlineSync.question("Nouvelle description : ");
-        while(newDescription === ""){
-          console.log('veuilleza renseignez la description')
-          newDescription = readlineSync.question('Description : ')
+        while (newDescription === "") {
+          console.log("veuilleza renseignez la description");
+          newDescription = readlineSync.question("Description : ");
         }
         let newStock = readlineSync.question("Nouveau stock : ");
-        while(newStock === ""){
-          console.log("stock doit etre renseigner")
-          newStock = readlineSync.question("Stock : ")
+        while (newStock === "") {
+          console.log("stock doit etre renseigner");
+          newStock = readlineSync.question("Stock : ");
         }
         let newCategory = readlineSync.question("Nouvelle catégorie : ");
-        while(newCategory == ""){
-          console.log('category doit etre renseiger')
-          newCategory = readlineSync.question("Catégorie: ")
-        } 
+        while (newCategory == "") {
+          console.log("category doit etre renseiger");
+          newCategory = readlineSync.question("Catégorie: ");
+        }
         let newBarcode = readlineSync.question("Nouveau code-barres : ");
-        while(newBarcode === ""){
-          console.log('renseigner barcode')
-          newBarcode = readlineSync.question("Barcode: ")
+        while (newBarcode === "") {
+          console.log("renseigner barcode");
+          newBarcode = readlineSync.question("Barcode: ");
         }
         let newStatus = readlineSync.question("Nouveau statut : ");
-        while(newStatus === ""){ 
-          console.log('le status est obligatoire')
-          newStatus = readlineSync.question("Status : ")
+        while (newStatus === "") {
+          console.log("le status est obligatoire");
+          newStatus = readlineSync.question("Status : ");
         }
         await productManager.update(
           id,
@@ -473,29 +466,6 @@ async function orderMenu() {
               console.log(`Détail du produit ${detail.product_id} mis à jour.`);
             }
           }
-
-          const addMoreDetails = readlineSync.question(
-            "Voulez-vous ajouter un nouveau produit à cette commande (o/n) ? "
-          );
-          if (addMoreDetails.toLowerCase() === "o") {
-            const newProductId = readlineSync.question(
-              "ID du nouveau produit : "
-            );
-            const newProductQuantity = readlineSync.question(
-              "Quantité du nouveau produit : "
-            );
-            const newProductPrice = readlineSync.question(
-              "Prix du nouveau produit : "
-            );
-
-            await orderManager.addOrderDetail(
-              updateId,
-              newProductId,
-              newProductQuantity,
-              newProductPrice
-            );
-            console.log("Nouveau produit ajouté à la commande.");
-          }
         } catch (error) {
           console.error(
             "Erreur lors de la mise à jour de la commande :",
@@ -526,14 +496,11 @@ async function orderMenu() {
       case "5":
         const viewId = readlineSync.questionInt("ID de la commande à voir : ");
 
-      
         const order = await orderManager.getOrderById(viewId);
 
         if (order) {
-          
           const details = await orderManager.getOrderDetailByOrderId(viewId);
 
-          
           const orderDetails = {
             id: order.id,
             date: order.date,
@@ -547,7 +514,7 @@ async function orderMenu() {
               price: detail.price,
             })),
           };
-          
+
           console.log("Détails de la commande :");
           console.log(orderDetails);
         } else {
@@ -580,10 +547,18 @@ async function paymentMenu() {
 
     switch (choice) {
       case "1":
-        const orderId = readlineSync.question("ID de la commande : ");
-        const date = readlineSync.question("Date du paiement : ");
-        const amount = readlineSync.question("Montant : ");
-        const paymentMethod = readlineSync.question("Méthode de paiement : ");
+        const orderId = readlineSync.questionInt("ID de la commande : ");
+        let date = readlineSync.question("Date du paiement : ");
+        while (date === "") {
+          console.log("la date doit etre renseignée");
+          date = readlineSync.question("Date: ");
+        }
+        const amount = readlineSync.questionFloat("Montant : ");
+        let paymentMethod = readlineSync.question("Méthode de paiement : ");
+        while (paymentMethod === "") {
+          console.log("la methode de paiement est etre specifiée");
+          paymentMethod = readlineSync.question("Methode de paiement: ");
+        }
         await paymentManager.addPayment(orderId, date, amount, paymentMethod);
         console.log("Paiement ajouté avec succès.");
         break;
@@ -594,11 +569,24 @@ async function paymentMenu() {
         break;
 
       case "3":
-        const id = readlineSync.question("ID du paiement à mettre à jour : ");
-        const order_id = readlineSync.question("ID de la commande : ");
-        const newdate = readlineSync.question("Nouvelle date : ");
-        const newamount = readlineSync.question("Nouveau montant : ");
-        const newpaymentMethod = readlineSync.question("Nouvelle méthode : ");
+        const id = readlineSync.questionInt(
+          "ID du paiement à mettre à jour : "
+        );
+        const order_id = readlineSync.questionInt("ID de la commande : ");
+
+        let newdate = readlineSync.question("Nouvelle date : ");
+        while (newdate === "") {
+          console.log("vous devez renseigner la date");
+          newdate = readlineSync.question("Nouvelle date: ");
+        }
+        const newamount = readlineSync.questionFloat("Nouveau montant : ");
+        let newpaymentMethod = readlineSync.question("Nouvelle méthode : ");
+        while (newpaymentMethod === "") {
+          console.log("la methode de payement doit etre spécifiée");
+          newpaymentMethod = readlineSync.question(
+            "Nouvelle methode de paiement : "
+          );
+        }
         await paymentManager.updatePayment(
           id,
           order_id,
@@ -612,7 +600,6 @@ async function paymentMenu() {
       case "4":
         const deleteId = readlineSync.question("ID du paiement à supprimer : ");
         await paymentManager.destroyPayment(deleteId);
-        console.log("Paiement supprimé avec succès.");
         break;
 
       case "5":
