@@ -29,7 +29,7 @@ Gestion Commerciale est une application de gestion permettant de gérer des **cl
 2.Accédez au répertoire du projet :
 
 ````bash
-   cd cd app-gestion-des-commandes
+  cd app-gestion-des-commandes
 ````
 
 3.Installez les dépendances :
