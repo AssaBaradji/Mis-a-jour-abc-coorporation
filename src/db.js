@@ -7,6 +7,7 @@ const pool = mysql.createPool({
   database: "product_manager",
   waitForConnections: true,
   connectionLimit: 10,
+  connectTimeout: false,
 });
 
 module.exports = pool;

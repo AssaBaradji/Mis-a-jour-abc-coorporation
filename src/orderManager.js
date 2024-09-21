@@ -81,7 +81,15 @@ async function addOrder(
         productPrice: "",
       };
 
-      const newProductId = readlineSync.questionInt("ID du produit : ");
+      let newProductId = readlineSync.questionInt("ID du produit : ");
+      const [productExist] = await connection.execute(
+        "SELECT * FROM products WHERE id = ? ",
+        [newProductId]
+      );
+      while (productExist.length === 0) {
+        console.log("l'id du produit n'existe pas");
+        newProductId = readlineSync.questionInt("ID du produit : ");
+      }
       detail.productId = newProductId;
 
       const newProductQuantity = readlineSync.questionInt(

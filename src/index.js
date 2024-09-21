@@ -3,6 +3,7 @@ const customerManager = require("./customerManager");
 const productManager = require("./productManager");
 const orderManager = require("./orderManager");
 const paymentManager = require("./paymentManager");
+const pool = require("./db");
 
 function isValidDate(dateString) {
   const date = new Date(dateString);
@@ -313,6 +314,7 @@ async function orderDetailMenu(newOrderId) {
 }
 
 async function orderMenu() {
+  const connection = pool.getConnection();
   let choice = "";
   while (choice !== "0") {
     console.log("\n--- Gestion des commandes ---");
@@ -339,9 +341,19 @@ async function orderMenu() {
         }
 
         let trackNumber = readlineSync.question("Numéro de suivi : ");
-        while (trackNumber === "") {
-          console.log("veuillez reseigner le numéro de suivi");
+        let [trackNumberExist] = await (
+          await connection
+        ).execute("SELECT * FROM purchase_orders Where track_number = ? ", [
+          trackNumber,
+        ]);
+        while (trackNumber === "" || trackNumberExist.length > 0) {
+          console.log("Le numéro de suivi doit etre unique est non null");
           trackNumber = readlineSync.question("Numéro de suivi : ");
+          [trackNumberExist] = await (
+            await connection
+          ).execute("SELECT * FROM purchase_orders Where track_number = ? ", [
+            trackNumber,
+          ]);
         }
         let status = readlineSync.question("Statut (en cours/complété) : ");
         while (status === "") {
@@ -377,8 +389,8 @@ async function orderMenu() {
           await orderDetailMenu(newOrderId);
         } catch (error) {
           console.error(
-            "Erreur lors de l'ajout de la commande :",
-            error.message
+            "Erreur lors de l'ajout de la commande :"
+            // error.message
           );
         }
         break;
